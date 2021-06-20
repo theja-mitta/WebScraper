@@ -5,7 +5,7 @@ import csv
 class MovieDataManager:
     def __init__(self, csv_file):
         self.filename = csv_file
-        self.file_handler = False
+        self.file_handler = None
 
     def _open(self, mode='r'):
         try:

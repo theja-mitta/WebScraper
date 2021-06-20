@@ -19,5 +19,3 @@ API_KEY = 'fa6a271'
 OMDB_API_URL = 'http://www.omdbapi.com/'
 
 CSV_HEADER_FIELDS = ['Title', 'Genre', 'Actors', 'imdbID', 'Keywords']
-
-

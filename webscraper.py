@@ -11,6 +11,7 @@ from data.config import API_KEY, OMDB_API_URL
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 
+# Util method to check if movie id conforms to valid format and returns boolean value if it matches pattern
 def is_movie_id_valid(movie_id):
     regex = re.compile(r"^[t]{2}\d+$")
     if movie_id != '' and len(movie_id) != 9:
@@ -20,15 +21,23 @@ def is_movie_id_valid(movie_id):
 
 
 class IMDBWebScraper:
+    """
+    This class is used to encapsulate all attributes and methods which helps with
+    web-scraping and thereby returns the movie details from imdb pages like pages lists top rated
+    imdb movies and each movie details like Actors, Synopsis(Plot), Director etc.
+    """
     def __init__(self, url):
         self.url = url
 
+    # This function uses Beautiful Soup which is web-scraping python library helps in scraping the web pages and
+    # returns the html parsed for further processing
     def scrape_webpage(self, url=None):
         url = url if url else self.url
         res = requests.get(url, verify=False)
         parsed_data = BeautifulSoup(res.content, 'html5lib')
         return parsed_data
 
+    # This function returns the top 5(count) imdb movie ids
     def get_movie_ids(self, count):
         try:
             data = self.scrape_webpage()
@@ -46,6 +55,7 @@ class IMDBWebScraper:
         except Exception as ex:
             print(ex)
 
+    # This function returns the synopsis or short summary of each movie
     def get_synopsis(self, movie_id):
         synopsis = ''
         url = f'https://www.imdb.com/title/{movie_id}'
@@ -61,6 +71,14 @@ class IMDBWebScraper:
 
     @staticmethod
     def get_kw_synopsis(synopsis):
+        """
+        The Python NLTK library contains a default list of stop words.
+        To remove stop words, you need to divide your text into tokens (words),
+        and then check if each token matches words in your list of stop words.
+        If the token matches a stop word, you ignore the token.
+        Otherwise you add the token to the list of valid words.
+        """
+
         # Remove punctuation
         text = re.sub('[^a-zA-Z]', ' ', str(synopsis))
 
@@ -82,6 +100,7 @@ class IMDBWebScraper:
         filtered_synopsis = [w for w in word_tokens if not w.lower() in stop_words]
         return filtered_synopsis
 
+    # This function accepts movie id as an argument and then returns the movie details as json
     @staticmethod
     def get_movie_details(movie_id):
         if is_movie_id_valid(movie_id):
