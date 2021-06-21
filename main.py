@@ -1,5 +1,6 @@
 from pathlib import Path
 import csv
+import logging
 
 from bucket_utils import get_file_from_s3, push_file_to_s3
 from data.config import BUCKET_NAME, FILE_NAME, LOCAL_FILE_PATH, LOCAL_FILE_NAME, MOVIES_COUNT, IMDB_URL, \
@@ -55,7 +56,8 @@ def main():
         buffer_data.append_to_csv(new_data)
 
         # Pushing updated csv file to s3 bucket
-        push_file_to_s3(str(BUFFER_FILE_PATH / BUFFER_FILE_NAME), BUCKET_NAME, FILE_NAME)
+        if push_file_to_s3(str(BUFFER_FILE_PATH / BUFFER_FILE_NAME), BUCKET_NAME, FILE_NAME):
+            print(f"New version of csv file is uploaded to bucket {BUCKET_NAME} successfully")
 
 
 if __name__ == '__main__':

@@ -41,6 +41,7 @@ class IMDBWebScraper:
 
     # This function returns the top 5(count) imdb movie ids
     def get_movie_ids(self, count):
+        print(f"Scraping top {count} movie ids from IMDB webpage {self.url}")
         if isinstance(count, int):
             if count >= 0:
                 try:
@@ -70,6 +71,7 @@ class IMDBWebScraper:
         if is_movie_id_valid(movie_id):
             synopsis = ''
             url = f'https://www.imdb.com/title/{movie_id}'
+            print(f"Scraping synopsis for movie id {movie_id} from IMDB webpage {url}")
             try:
                 data = self.scrape_webpage(url)
                 synopsis = data.body.find('div', 'plot_summary').findChild('div', 'summary_text').getText()
@@ -92,6 +94,7 @@ class IMDBWebScraper:
         Otherwise you add the token to the list of valid words.
         """
         if isinstance(synopsis, str):
+            print(f"Processing the synopsis {synopsis} for list of keywords using Natural Language Toolkit (NLTK)")
             try:
                 # Remove punctuation
                 text = re.sub('[^a-zA-Z]', ' ', str(synopsis))
@@ -125,6 +128,7 @@ class IMDBWebScraper:
     @staticmethod
     def get_movie_details(movie_id):
         if is_movie_id_valid(movie_id):
+            print(f"Calling {OMDB_API_URL} for getting movie details with movie id {movie_id}")
             endpoint = f'{OMDB_API_URL}?i={movie_id}&apiKey={API_KEY}'
             movie_details = requests.get(endpoint)
             # json converted to python dict below

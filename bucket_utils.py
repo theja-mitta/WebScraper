@@ -8,6 +8,7 @@ import boto3.session
 def is_bucket_exists(bucket_name, region=None):
     exist = False
     try:
+        print(f"Checking if bucket {bucket_name} exists")
         if region is None:
             s3_client = boto3.client('s3')
             if s3_client.head_bucket(Bucket=bucket_name):
@@ -22,6 +23,7 @@ def is_bucket_exists(bucket_name, region=None):
 def is_movie_file_exists(bucket_name, file_name):
     s3 = boto3.resource('s3')
     try:
+        print(f"Checking if csv file {file_name} exists in bucket {bucket_name}")
         s3.Object(bucket_name, file_name).load()
     except ClientError as e:
         if e.response['Error']['Code'] == "404":
@@ -56,6 +58,7 @@ def push_file_to_s3(filename, bucket, object_name):
     else:
         print(f"Bucket {bucket} doesn't exist")
         raise Exception(f"Bucket {bucket} not found")
+    return True
 
 
 def download_csv_file(bucket, filename, local_filename):
@@ -66,7 +69,7 @@ def download_csv_file(bucket, filename, local_filename):
     :param bucket: Bucket to download from
     :return: True if file was downloaded, else False
     """
-
+    print(f"Downloading {filename} file from {bucket} bucket and storing in {local_filename}")
     # Downloading the file from s3 bucket
     s3_client = boto3.client('s3')
     try:
@@ -85,6 +88,7 @@ def upload_csv_file(filename, bucket, object_name=None):
     :param object_name: same as filename
     :return: True if file was uploaded, else False
     """
+    print(f"Uploading file {filename} to {bucket} bucket with filename as {object_name}")
     # If S3 object_name was not specified, use file_name
     if object_name is None:
         object_name = filename
@@ -111,7 +115,7 @@ def create_bucket(bucket, region=None):
     :param region: String region to create bucket in, e.g., 'us-west-2'
     :return: True if bucket created, else False
     """
-
+    print(f"Creating bucket {bucket}")
     # Creating the S3 bucket
     try:
         if region is None:

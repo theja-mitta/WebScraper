@@ -28,12 +28,14 @@ class MovieDataManager:
             self.file_handler.close()
 
     def copyfile(self, destination_path):
+        print(f"Copying the csv file from S3 to destination path {destination_path} for further processing")
         fh = self._open()
         with open(destination_path, 'w') as new_file:
             new_file.write(fh.read())
         self._close()
 
     def get_movie_ids(self, count=None):
+        print(f"fetching movie ids from csv file to compare the current IMDB movie ids")
         movie_ids = []
         fh = self._open()
         content = csv.DictReader(fh)
@@ -46,6 +48,7 @@ class MovieDataManager:
         return movie_ids
 
     def append_to_csv(self, data):
+        print(f"Appending new movie data to csv file(S3)")
         # data = {id1: {'details': <dict>, 'synopsis': <list>}, id2: {....}, id3: {....}}
         fh = self._open(mode='a')
         for movie_id, movie_data in data.items():
@@ -59,6 +62,7 @@ class MovieDataManager:
         self._close()
 
     def fetch_movie_details_with_key(self, key):
+        print(f"fetching movie details from csv file using key {key}")
         # check if csv from s3 is already present in current folder
         # read csv and find for actors/genre match then return the matched rows
         if isinstance(key, str):
