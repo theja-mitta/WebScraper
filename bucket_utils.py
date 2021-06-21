@@ -73,6 +73,8 @@ def download_csv_file(bucket, filename, local_filename):
         s3_client.download_file(bucket, filename, local_filename)
     except ClientError as e:
         logging.error(e)
+        return False
+    return True
 
 
 def upload_csv_file(filename, bucket, object_name=None):
@@ -91,6 +93,8 @@ def upload_csv_file(filename, bucket, object_name=None):
     s3_client = boto3.client('s3')
     try:
         s3_client.upload_file(filename, bucket, object_name)
+    except FileNotFoundError as e:
+        print(f"File {filename} not found - {str(e)}")
     except ClientError as e:
         logging.error(e)
         return False

@@ -2,6 +2,9 @@ import csv
 
 
 # Reads and Writes data to CSV files
+import logging
+
+
 class MovieDataManager:
     def __init__(self, csv_file):
         self.filename = csv_file
@@ -12,6 +15,11 @@ class MovieDataManager:
             file_handler = open(self.filename, mode, newline='')
             self.file_handler = file_handler
             return file_handler
+        except IOError as e:
+            err, strerror = e.args
+            print(f"I/O error({err}): {strerror}")
+        except FileNotFoundError as ex:
+            print(f"Oops! File {self.filename} not found - {str(ex)}")
         except Exception as ex:
             print(f"Error while opening file {self.filename} - {str(ex)}")
 
@@ -53,8 +61,12 @@ class MovieDataManager:
     def fetch_movie_details_with_key(self, key):
         # check if csv from s3 is already present in current folder
         # read csv and find for actors/genre match then return the matched rows
-        fh = self._open(mode='r')
-        for row in fh:
-            if key in row:
-                return row
-        self._close()
+        if isinstance(key, str):
+            fh = self._open(mode='r')
+            for row in fh:
+                if key in row:
+                    return row
+            self._close()
+        else:
+            logging.error('Please pass the valid key type <str>')
+            return 'Please pass the valid key'

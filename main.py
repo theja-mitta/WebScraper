@@ -34,7 +34,7 @@ def main():
 
         # Get movie details from csv by passing Genre/Actor as key
         current_data = MovieDataManager(str(LOCAL_FILE_PATH / LOCAL_FILE_NAME))
-        print(current_data.fetch_movie_details_with_key('Al Pacino'))
+        print(current_data.fetch_movie_details_with_key('Morgan Freeman'))
     else:
         # Copy the existing s3 data to buffer
         s3_data.copyfile(str(BUFFER_FILE_PATH / BUFFER_FILE_NAME))
