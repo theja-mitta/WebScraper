@@ -20,3 +20,8 @@ This project develops web scraping techniques to extract imdb movie details and 
 6. csv - module to read and write csv files
 7. json - module to load and parse json
 8. Beautiful Soup - Webscraping library
+
+# Commands to run
+1. python -m unittest - To run test cases
+2. pip install #module_name# - To install dependencies
+3. python main.py - To run the application
