@@ -19,7 +19,7 @@ This project develops web scraping techniques to extract imdb movie details and 
 5. unittest - Unit test module for assert statements
 6. csv - module to read and write csv files
 7. json - module to load and parse json
-8. Beautiful Soup - Webscraping library
+8. Beautiful Soup - Webscraping library for scraping IMDB pages
 
 # Commands to run
 1. python -m unittest - To run test cases
