@@ -12,7 +12,7 @@ This project develops web scraping techniques to extract imdb movie details and 
 6. Errors - Which returns errors
 
 # Dependencies for app to run
-1. re - regex for some validation
+1. re - regex for validation of inputs
 2. requests - for making http requests
 3. nltk - language processing for filtering keywords in a given sentence
 4. logging - To log errors
