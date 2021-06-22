@@ -32,14 +32,14 @@ class IMDBWebScraper:
         self.url = url
 
     # This function uses Beautiful Soup which is web-scraping python library helps in scraping the web pages and
-    # returns the html parsed for further processing
+    # returns the html parsed for further data processing/retrieval
     def scrape_webpage(self, url=None):
         url = url if url else self.url
         res = requests.get(url, verify=False)
         parsed_data = BeautifulSoup(res.content, 'html5lib')
         return parsed_data
 
-    # This function returns the top 5(count) imdb movie ids
+    # This function returns the top 5(count) imdb movie ids --> (Milestone 1)
     def get_movie_ids(self, count):
         print(f"Scraping top {count} movie ids from IMDB webpage {self.url}")
         if isinstance(count, int):
@@ -66,7 +66,7 @@ class IMDBWebScraper:
             ErrorHandler(f'Error: count {count} <str> type not allowed').raise_error()
             return TypeError('Only integer type of count allowed')
 
-    # This function returns the synopsis or short summary of each movie
+    # This function returns the synopsis or short summary of each movie --> (Milestone 2)
     def get_synopsis(self, movie_id):
         if is_movie_id_valid(movie_id):
             synopsis = ''
@@ -84,6 +84,7 @@ class IMDBWebScraper:
         else:
             ErrorHandler('Invalid movie id, Please try again.').raise_error()
 
+    # Milestone 3
     @staticmethod
     def get_kw_synopsis(synopsis):
         """
@@ -124,7 +125,7 @@ class IMDBWebScraper:
             ErrorHandler(f"Invalid synopsis {synopsis}, Please check!").raise_error()
             return Exception(f"Invalid synopsis")
 
-    # This function accepts movie id as an argument and then returns the movie details as json
+    # This function accepts movie id as an argument and then returns the movie details as json (Milestone 5)
     @staticmethod
     def get_movie_details(movie_id):
         if is_movie_id_valid(movie_id):

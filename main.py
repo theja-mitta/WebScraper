@@ -33,9 +33,10 @@ def main():
     if not data_diff:
         print(f"Current file data holds good!")
 
-        # Get movie details from csv by passing Genre/Actor as key
-        current_data = MovieDataManager(str(LOCAL_FILE_PATH / LOCAL_FILE_NAME))
-        print(current_data.fetch_movie_details_with_key('Morgan Freeman'))
+        # Get movie details from csv by passing Genre/Actor as key (Milestone 9)
+        # Uncomment below code to print the details of movie
+        # current_data = MovieDataManager(str(LOCAL_FILE_PATH / LOCAL_FILE_NAME))
+        # print(current_data.fetch_movie_details_with_key('Morgan Freeman'))
     else:
         # Copy the existing s3 data to buffer
         s3_data.copyfile(str(BUFFER_FILE_PATH / BUFFER_FILE_NAME))
@@ -43,7 +44,8 @@ def main():
         # Append new data to the buffer
         buffer_data = MovieDataManager(str(BUFFER_FILE_PATH / BUFFER_FILE_NAME))
 
-        # new_data = {id1: {'details': <dict>, 'synopsis': <list>}, id2: {....}, id3: {....}}
+        # new_data = {id1: {'details': <dict>, 'synopsis': <list>}, id2: {....}, id3: {....}} -->
+        # Data Wrangling(Milestone 4, 6 )
         new_data = {}
         for imdb_id in data_diff:
             syn = imdb.get_synopsis(imdb_id)
@@ -53,9 +55,10 @@ def main():
 
             new_data[imdb_id] = {'details': details, 'synopsis': kw}
 
+        # Below code performs adding movies data to csv (Milestone 7)
         buffer_data.append_to_csv(new_data)
 
-        # Pushing updated csv file to s3 bucket
+        # Pushing updated csv file to s3 bucket (Milestone 10)
         if push_file_to_s3(str(BUFFER_FILE_PATH / BUFFER_FILE_NAME), BUCKET_NAME, FILE_NAME):
             print(f"New version of csv file is uploaded to bucket {BUCKET_NAME} successfully")
 

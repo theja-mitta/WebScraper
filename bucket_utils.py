@@ -105,6 +105,7 @@ def upload_csv_file(filename, bucket, object_name=None):
     return True
 
 
+# Milestone 8
 def create_bucket(bucket, region=None):
     """Create an S3 bucket in a specified region
 
